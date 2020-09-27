@@ -68,7 +68,7 @@ project_get () {
   if (buf->data->project == "") return url_none ();
   // FIXME: check whether we should force large projects to be loaded
   // when opening a chapter.  This might cause unwanted slowness.
-  //url prj_name = head (name) * as_string (buf->data->project);
-  //buf->prj = concrete_buffer_insist (prj_name);
+  url prj_name = head (name) * as_string (buf->data->project);
+  buf->prj = concrete_buffer_insist (prj_name);
   return buf->prj->buf->name;
 }
