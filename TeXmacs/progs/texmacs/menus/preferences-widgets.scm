@@ -508,6 +508,10 @@
 (define (preserve-or-change color-links)
   (if color-links "change" "preserve"))
 
+(define-preference-names "sort-merge-citations"
+  ("off" "Disabled")
+  ("on" "Enabled"))
+
 (tm-widget (pdf-preferences-widget)
   ===
   (bold (text "TeXmacs -> Pdf/Postscript"))
@@ -526,7 +530,10 @@
               (get-boolean-preference "texmacs->pdf:expand slides")))
    (meti (hlist // (text "Color links"))
       (toggle (set-locus-rendering "locus-on-paper" (preserve-or-change answer))
-              (color-links? (get-locus-rendering "locus-on-paper")))))
+              (color-links? (get-locus-rendering "locus-on-paper"))))
+   (meti (hlist // (text "Sort and merge citations"))
+      (toggle (set-boolean-preference "sort-merge-citations" answer)
+              (get-boolean-preference "sort-merge-citations"))))
   (assuming (supports-native-pdf?)
       (aligned (meti (hlist // (text "Distill encapsulated Pdf files"))
         (toggle (set-boolean-preference "texmacs->pdf:distill inclusion" answer)
