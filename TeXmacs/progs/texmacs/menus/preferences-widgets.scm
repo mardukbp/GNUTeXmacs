@@ -473,6 +473,10 @@
 (define (preserve-or-change color-links)
  (if color-links "change" "preserve"))
 
+(define-preference-names "sort-merge-citations"
+  ("off" "Disabled")
+  ("on" "Enabled"))
+
 (tm-widget (pdf-preferences-widget)
   ===
   (bold (text "TeXmacs -> Pdf/Postscript"))
@@ -480,25 +484,35 @@
   (aligned
     (assuming (supports-native-pdf?)
       (meti (hlist // (text "Produce Pdf using native export filter"))
-	(toggle (set-boolean-preference "native pdf" answer)
-		(get-boolean-preference "native pdf"))))
+	    (toggle (set-boolean-preference "native pdf" answer)
+		  (get-boolean-preference "native pdf"))))
+
     (assuming (supports-ghostscript?)
       (meti (hlist // (text "Produce Postscript using native export filter"))
-	(toggle (set-boolean-preference "native postscript" answer)
-		(get-boolean-preference "native postscript"))))
-   (meti (hlist // (text "Expand beamer slides"))
+	    (toggle (set-boolean-preference "native postscript" answer)
+		  (get-boolean-preference "native postscript"))))
+
+    (meti (hlist // (text "Expand beamer slides"))
       (toggle (set-boolean-preference "texmacs->pdf:expand slides" answer)
 	      (get-boolean-preference "texmacs->pdf:expand slides")))
-   (meti (hlist // (text "Color links"))
+	      
+    (meti (hlist // (text "Sort and merge citations"))
+      (toggle (set-boolean-preference "sort-merge-citations" answer)
+              (get-boolean-preference "sort-merge-citations")))
+    
+    (meti (hlist // (text "Color links"))
       (toggle (set-locus-rendering "locus-on-paper" (preserve-or-change answer))
 	      (color-links? (get-locus-rendering "locus-on-paper")))))
-    (assuming (supports-native-pdf?)
+
+   (assuming (supports-native-pdf?)
       (aligned (meti (hlist // (text "Distill encapsulated Pdf files"))
-	(toggle (set-boolean-preference "texmacs->pdf:distill inclusion" answer)
-		(get-boolean-preference "texmacs->pdf:distill inclusion"))))
+	    (toggle (set-boolean-preference "texmacs->pdf:distill inclusion" answer)
+		  (get-boolean-preference "texmacs->pdf:distill inclusion"))))
+
       (aligned (meti (hlist // (text "Check exported Pdf files for correctness"))
-	(toggle (set-boolean-preference "texmacs->pdf:check" answer)
-		(get-boolean-preference "texmacs->pdf:check"))))
+	    (toggle (set-boolean-preference "texmacs->pdf:check" answer)
+		  (get-boolean-preference "texmacs->pdf:check"))))
+
       (aligned (item (text "Pdf version number:")
         (enum (set-preference "texmacs->pdf:version" answer)
 	      '("default" "1.4" "1.5" "1.6" "1.7")
